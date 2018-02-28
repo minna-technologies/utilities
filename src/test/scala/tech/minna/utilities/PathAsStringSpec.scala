@@ -29,14 +29,14 @@ class PathAsStringSpec extends FlatSpec with Matchers {
   }
 
   it should "not compile for method calls" in {
-    "pathAsString((f: Family) => f.mother.name.middle())"  shouldNot compile
-    "pathAsString((f: Family) => f.children(1).name)"  shouldNot compile
+    "pathAsString((f: Family) => f.mother.name.middle())" shouldNot compile
+    "pathAsString((f: Family) => f.children(1).name)" shouldNot compile
   }
 
   it should "not compile for non paths" in {
-    "pathAsString((f: Family) => identity(f.mother).name"  shouldNot compile
-    "pathAsString((f: Family) => 123"  shouldNot compile
-    "pathAsString((f: Family) => f.mother.name + \"?\")"  shouldNot compile
-    "pathAsString((f: Family) => \"Hey \" + f.father.name)"  shouldNot compile
+    "pathAsString((f: Family) => identity(f.mother).name" shouldNot compile
+    "pathAsString((f: Family) => 123" shouldNot compile
+    "pathAsString((f: Family) => f.mother.name + \"?\")" shouldNot compile
+    "pathAsString((f: Family) => \"Hey \" + f.father.name)" shouldNot compile
   }
 }
