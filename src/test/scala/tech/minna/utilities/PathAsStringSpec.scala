@@ -37,6 +37,6 @@ class PathAsStringSpec extends FlatSpec with Matchers {
     "pathAsString((f: Family) => identity(f.mother).name"  shouldNot compile
     "pathAsString((f: Family) => 123"  shouldNot compile
     "pathAsString((f: Family) => f.mother.name + \"?\")"  shouldNot compile
-    "pathAsString((f: Family) => \"Hey \" + f.father.name + \"?\")"  shouldNot compile
+    "pathAsString((f: Family) => \"Hey \" + f.father.name)"  shouldNot compile
   }
 }
