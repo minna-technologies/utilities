@@ -46,6 +46,16 @@ class PathAsStringSpec extends FlatSpec with Matchers {
     pathAsString[Relatives](_.closest.flatMap(_.father.map(_.name))) shouldEqual "closest.father.name"
   }
 
+
+  it should "convert a path with ~> for option and traversable to a string" in {
+    pathAsString[Family](_.father.~>.name) shouldEqual "father.name"
+    pathAsString[Family](_.father.~>.name.given) shouldEqual "father.name.given"
+    pathAsString[Family](_.children.~>.name.first) shouldEqual "children.name.first"
+    pathAsString[Family](_.children.~>.name.multipleLast) shouldEqual "children.name.multipleLast"
+    pathAsString[Relatives](_.closest.~>.father.~>.name) shouldEqual "closest.father.name"
+    pathAsString[Relatives](_.closest.~>.father.~>.name) shouldEqual "closest.father.name"
+  }
+
   it should "not compile for method calls" in {
     "pathAsString((f: Family) => f.mother.name.middle())" shouldNot compile
     "pathAsString((f: Family) => f.children(1).name)" shouldNot compile
