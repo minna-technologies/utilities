@@ -9,17 +9,34 @@ object PathAsString {
   /**
     * Converts a field path to a string of the path.
     *
+    * Ignores `map` and `flatMap` as terms if they are part of the path.
+    *
+    * @example _.p.q.r => "p.q.r"
+    * @example _.p.map(_.q).r => "p.q.r"
+    * @example _.p.flatMap(_.q).r => "p.q.r"
     * @return The path as a string.
     */
-  def pathAsString[A, B](path: A => B): String = macro pathAsStringImpl[A, B]
+  def pathAsString[A](path: A => Any): String = macro pathAsStringImpl[A, Any]
+
+  /**
+    * Converts a field path of a certain type to a string of the path.
+    *
+    * @return The path as a string.
+    */
+  def pathOfTypeAsString[A, B](path: A => B): String = macro pathAsStringImpl[A, B]
 
   def pathAsStringImpl[A, B](c: blackbox.Context)(path: c.Expr[A => B]): c.Tree = {
     import c.universe._
 
     /**
       * @example (_.p.q.r) -> List(p, q, r)
+      * @example (_.p.map(_.q).r) -> List(p, q, r)
       */
     def split(accessor: c.Tree): List[c.TermName] = accessor match {
+      case q"$pq.map[..$_](($_) => $nestedAccessor)" => split(pq) ++ split(nestedAccessor)
+      case q"$pq.map[..$_](($_) => $nestedAccessor)(..$_)" => split(pq) ++ split(nestedAccessor)
+      case q"$pq.flatMap[..$_](($_) => $nestedAccessor)" => split(pq) ++ split(nestedAccessor)
+      case q"$pq.flatMap[..$_](($_) => $nestedAccessor)(..$_)" => split(pq) ++ split(nestedAccessor)
       case q"$pq.$r" => split(pq) :+ r
       case _: Ident => Nil
       case _ => c.abort(c.enclosingPosition, s"Unsupported path element: $accessor")

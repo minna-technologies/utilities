@@ -20,4 +20,5 @@ Converts a field path to a string.
 
 ```scala
 PathAsString.pathAsString((f: Family) => f.mother.name.last) => "mother.name.last"
+PathAsString.pathAsString((f: Family) => f.mother.map(_.name).last) => "mother.name.last"
 ```
