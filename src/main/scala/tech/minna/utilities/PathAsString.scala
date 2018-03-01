@@ -8,12 +8,12 @@ import scala.reflect.macros.blackbox
 
 object PathAsString {
 
-  @compileTimeOnly("option.<> is only intended to be used in combination with PathAsString macro")
+  @compileTimeOnly("option.~> is only intended to be used in combination with PathAsString macro")
   implicit class PathTraverseOption[T](option: Option[T]) {
     def ~> : T = ???
   }
 
-  @compileTimeOnly("traversable.<> is only intended to be used in combination with PathAsString macro")
+  @compileTimeOnly("traversable.~> is only intended to be used in combination with PathAsString macro")
   implicit class PathTraverseTraversableOnce[T](traversable: TraversableOnce[T]) {
     def ~> : T = ???
   }
