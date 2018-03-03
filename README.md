@@ -19,7 +19,10 @@ This library is compiled for Scala 2.12.
 Converts a field path to a string.
 
 ```scala
+PathAsString.pathAsString[Family](_.mother.name.last) => "mother.name.last"
 PathAsString.pathAsString((f: Family) => f.mother.name.last) => "mother.name.last"
-PathAsString.pathAsString((f: Family) => f.father.~>.name.last) => "father.name.last"
-PathAsString.pathAsString((f: Family) => f.father.map(_.name).last) => "father.name.last"
+
+// Options and collections can be unlifted by ~>
+PathAsString.pathAsString[Family](_.father.~>.name.first) => "father.name.first"
+PathAsString.pathAsString[Family](_.father.map(_.name).first) => "father.name.first"
 ```
