@@ -19,7 +19,7 @@ object TraitEnumeration {
     * }
     * }}}
     *
-    * @return A set of all the enumeration values
+    * @return A set of all the enumeration values for a given sealed trait
     */
   def values[A]: Set[A] = macro valuesImpl[A]
 
