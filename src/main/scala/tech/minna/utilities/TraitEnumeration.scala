@@ -6,7 +6,8 @@ import scala.reflect.internal.Symbols
 
 object TraitEnumeration {
   /**
-    * Generate enumeration values from all the case objects inherited from a sealed trait.
+    * Generate enumeration values from all the case objects inherited from a sealed trait. The sealed trait
+    * can only be inherited by case objects.
     *
     * @example
     * {{{
@@ -19,19 +20,18 @@ object TraitEnumeration {
     * }
     * }}}
     *
-    * @return A set of all the enumeration values for a given sealed trait
+    * @return A set of the case objects inheriting the given sealed trait.
     */
   def values[A]: Set[A] = macro valuesImpl[A]
 
-  def valuesImpl[A: c.WeakTypeTag](c: blackbox.Context) = {
+  def valuesImpl[A: c.WeakTypeTag](c: blackbox.Context): c.universe.Tree = {
     import c.universe._
 
     val symbol = weakTypeOf[A].typeSymbol.asClass
 
-    if (!symbol.isClass || !symbol.isSealed)
+    if (!symbol.isClass || !symbol.isSealed) {
       c.abort(c.enclosingPosition, "Can only generate enumeration values of a sealed trait.")
-    else {
-
+    } else {
       val children = symbol.knownDirectSubclasses.toList
 
       if (!children.forall(_.isModuleClass)) {
@@ -42,7 +42,7 @@ object TraitEnumeration {
         }
 
         q"""
-           Set(..${caseObjectSymbols.map { symbol => q"""${symbol}""" }})
+           Set(..${caseObjectSymbols.map { symbol => q"$symbol" }})
           """
       }
     }
