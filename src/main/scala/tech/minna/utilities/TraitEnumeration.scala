@@ -4,7 +4,7 @@ import scala.language.experimental.macros
 import scala.reflect.macros.blackbox
 import scala.reflect.internal.Symbols
 
-object SealedTraitCaseObjects {
+object TraitEnumeration {
   def values[A]: Set[A] = macro valuesImpl[A]
 
   def valuesImpl[A: c.WeakTypeTag](c: blackbox.Context) = {
