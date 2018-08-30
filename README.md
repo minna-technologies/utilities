@@ -6,7 +6,7 @@ This library provides various helpful utilities for when working with Scala code
 
 Add the following to your `build.sbt` file:
 ```scala
-libraryDependencies += "tech.minna" %% "utilities" % "1.1.0"
+libraryDependencies += "tech.minna" %% "utilities" % "1.2.0"
 resolvers += Resolver.bintrayRepo("minna-technologies", "maven")
 ```
 
