@@ -2,14 +2,13 @@ package tech.minna.utilities
 
 import scala.annotation.compileTimeOnly
 import scala.language.experimental.macros
-import scala.reflect.api.Trees
 import scala.reflect.macros.blackbox
 
 // Inspired by https://github.com/pathikrit/sauron/blob/master/src/main/scala/com/github/pathikrit/sauron/package.scala
 
 object PathAsString {
 
-  @compileTimeOnly("iterable.~> is only intended to be used in combination with PathAsString macro")
+  // @compileTimeOnly("iterable.~> is only intended to be used in combination with PathAsString macro")
   implicit class PathTraverseTraversableOnce[T](iterable: IterableOnce[T]) {
     def ~> : T = ???
   }
@@ -42,7 +41,7 @@ object PathAsString {
       * @example (_.p.~>.q.r) -> List(p, q, r)
       * @example (_.p.map(_.q).r) -> List(p, q, r)
       */
-    def split(accessor: Trees#Tree): scala.List[c.TermName] = accessor match {
+    def split(accessor: c.Tree): scala.List[c.TermName] = accessor match {
       case q"$pq.~>" if pq.tpe.typeConstructor.=:=(weakTypeOf[PathTraverseTraversableOnce[_]].typeConstructor) =>
         val q"$_($r)" = pq
         split(r)
