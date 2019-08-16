@@ -1,7 +1,8 @@
 organization := "tech.minna"
 name := "utilities"
 
-scalaVersion := "2.12.6"
+scalaVersion := "2.13.0"
+crossScalaVersions in ThisBuild := Seq("2.12.9", "2.13.0")
 
 scalacOptions in ThisBuild ++= Seq(
   "-unchecked",
@@ -10,7 +11,7 @@ scalacOptions in ThisBuild ++= Seq(
 
 libraryDependencies ++= Seq(
   "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-  "org.scalatest" %% "scalatest" % "3.0.3" % Test
+  "org.scalatest" %% "scalatest" % "3.0.8" % Test
 )
 
 // Publishing

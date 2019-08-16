@@ -8,13 +8,8 @@ import scala.reflect.macros.blackbox
 
 object PathAsString {
 
-  @compileTimeOnly("option.~> is only intended to be used in combination with PathAsString macro")
-  implicit class PathTraverseOption[T](option: Option[T]) {
-    def ~> : T = ???
-  }
-
-  @compileTimeOnly("traversable.~> is only intended to be used in combination with PathAsString macro")
-  implicit class PathTraverseTraversableOnce[T](traversable: TraversableOnce[T]) {
+  // @compileTimeOnly("iterable.~> is only intended to be used in combination with PathAsString macro")
+  implicit class PathTraverseTraversableOnce[T](iterable: IterableOnce[T]) {
     def ~> : T = ???
   }
 
@@ -46,10 +41,7 @@ object PathAsString {
       * @example (_.p.~>.q.r) -> List(p, q, r)
       * @example (_.p.map(_.q).r) -> List(p, q, r)
       */
-    def split(accessor: c.Tree): List[c.TermName] = accessor match {
-      case q"$pq.~>" if pq.tpe.typeConstructor.=:=(weakTypeOf[PathTraverseOption[_]].typeConstructor) =>
-        val q"$_($r)" = pq
-        split(r)
+    def split(accessor: c.Tree): scala.List[c.TermName] = accessor match {
       case q"$pq.~>" if pq.tpe.typeConstructor.=:=(weakTypeOf[PathTraverseTraversableOnce[_]].typeConstructor) =>
         val q"$_($r)" = pq
         split(r)
